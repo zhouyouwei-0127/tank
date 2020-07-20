@@ -3,7 +3,7 @@ package com.awei.tank;
 @SuppressWarnings("all")
 public class Mian {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         TankFrame tf = new TankFrame();
 
         while (true) {

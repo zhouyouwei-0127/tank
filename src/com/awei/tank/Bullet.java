@@ -12,6 +12,8 @@ public class Bullet {
     private final int speed = 10; //子弹速度
     private Dir dir = Dir.DOWN; //子弹方向
     private boolean live = true;
+    public static int WIDTH = ResourceMgr.bulletD.getWidth();
+    public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     TankFrame tf;
 
     public Bullet(int x, int y, Dir dir, TankFrame tf) {
@@ -25,10 +27,20 @@ public class Bullet {
         if (!live) {
             tf.bullets.remove(this); //移除死亡的坦克
         }
-        Color c = g.getColor();
-        g.setColor(Color.RED);
-        g.fillOval(x,y,width,height); //画图形
-        g.setColor(c);
+        switch (dir) {
+            case LEFT:
+                g.drawImage(ResourceMgr.bulletL,x,y,null); //画子弹图片
+                break;
+            case UP:
+                g.drawImage(ResourceMgr.bulletU,x,y,null); //画子弹图片
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.bulletR,x,y,null); //画子弹图片
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.bulletD,x,y,null); //画子弹图片
+                break;
+        }
 
         move(); //移动
     }
