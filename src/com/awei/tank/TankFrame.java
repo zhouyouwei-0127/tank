@@ -5,15 +5,18 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("all")
 public class TankFrame extends Frame {
 
-    Tank myTank = new Tank();
-    Bullet bullet = new Bullet();
+    Tank myTank = new Tank(300,300,Dir.UP,this);
+    List<Bullet> bullets = new ArrayList<Bullet>();
+    static final int GAME_WIDTH = 800; int GAME_HEIGHT = 600;
 
     public TankFrame() {
-        setSize(800,600);  //设置窗口大小
+        setSize(GAME_WIDTH,GAME_HEIGHT);  //设置窗口大小
         setResizable(false); //设置大小不能改变
         setTitle("tank war"); //设置标题
         setVisible(true); //设置窗口可见
@@ -31,11 +34,36 @@ public class TankFrame extends Frame {
         });
     }
 
+
+    //取消闪烁--把东西先画在一张图片上，然后把图片画到屏幕上
+    //repaint方法会先调用update方法，再调用paint方法
+    Image offScreenImage = null;
+    @Override
+    public void update(Graphics g) {
+        if (offScreenImage == null) {
+            offScreenImage = createImage(GAME_WIDTH,GAME_HEIGHT);
+        }
+        Graphics graphics = offScreenImage.getGraphics();
+        Color color = graphics.getColor();
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+        graphics.setColor(color);
+        paint(graphics);
+        g.drawImage(offScreenImage,0,0,null);
+    }
+
     //在窗口需要重新绘制的时候会自动调用此方法
     @Override
     public void paint(Graphics g) {
+        Color c = g.getColor();
+        g.setColor(Color.white);
+        g.drawString("子弹的数量：" + bullets.size(),10,60);
+        g.setColor(c);
+
         myTank.paint(g); //坦克自己画自己
-        bullet.paint(g); //子弹画自己
+        for (int i=0; i<bullets.size(); i++) {
+            bullets.get(i).paint(g);//子弹画自己
+        }
     }
 
     //键盘监听处理类，根据按键控制坦克的移动方向
@@ -81,6 +109,9 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = false;
+                    break;
+                case KeyEvent.VK_CONTROL:
+                    myTank.fire();
                     break;
                 default:
                     break;
