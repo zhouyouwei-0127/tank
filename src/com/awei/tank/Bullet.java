@@ -11,10 +11,10 @@ public class Bullet {
     private int width = 30, height = 30; //子弹宽高
     private final int speed = 10; //子弹速度
     private Dir dir = Dir.DOWN; //子弹方向
-    private boolean live = true;
+    private boolean living = true;
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
-    TankFrame tf;
+    TankFrame tf = null;
 
     public Bullet(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
@@ -24,7 +24,7 @@ public class Bullet {
     }
 
     public void paint(Graphics g) {
-        if (!live) {
+        if (!living) {
             tf.bullets.remove(this); //移除死亡的坦克
         }
         switch (dir) {
@@ -63,7 +63,20 @@ public class Bullet {
         }
         //如果子弹碰到边界则视为死亡，在Paint方法中将其在集合中移除
         if (x < 0 || y < 0 || x > tf.getWidth() || y > tf.getHeight()) {
-            live = false;
+            living = false;
         }
+    }
+
+    public void collideWith(Tank tank) {
+        Rectangle rectL = new Rectangle(x,y,WIDTH,HEIGHT);
+        Rectangle rectT = new Rectangle(tank.getX(),tank.getY(),tank.WIDTH,tank.HEIGHT);
+        if (rectL.intersects(rectT)) {
+            die();
+            tank.die();
+        }
+    }
+
+    private void die() {
+        living = false;
     }
 }

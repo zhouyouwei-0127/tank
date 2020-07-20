@@ -8,16 +8,16 @@ public class Tank {
     private int x = 200,y = 200;  //用变量定义位置，用来控制移动
     private final int speed = 5; //移动速度
     private Dir dir = Dir.UP; //移动方向
-    private static boolean moving = false; //坦克状态--静止或移动
-    public static int WIDTH = ResourceMgr.tankD.getWidth();
-    public static int HEIGHT = ResourceMgr.tankD.getHeight();
-    TankFrame tf;
+    private boolean moving = false; //坦克状态--静止或移动
+    private boolean living = true; //是否存活
+    public static int WIDTH = ResourceMgr.tankD.getWidth(); //图片的宽度
+    public static int HEIGHT = ResourceMgr.tankD.getHeight(); //图片的高度
+    TankFrame tf = null;
 
     public Tank(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.moving = moving;
         this.tf = tf;
     }
 
@@ -35,7 +35,26 @@ public class Tank {
         this.moving = moving;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public void paint(Graphics g) {
+        if (!living) {
+            tf.tanks.remove(this);
+        }
         switch (dir) {
             case LEFT:
                 g.drawImage(ResourceMgr.tankL,x,y,null); //画坦克图片
@@ -71,6 +90,8 @@ public class Tank {
             case DOWN:
                 y += speed;
                 break;
+            default:
+                break;
         }
     }
 
@@ -78,5 +99,9 @@ public class Tank {
         int bx = x + WIDTH/2 - Bullet.WIDTH/2;
         int by = y + HEIGHT/2 - Bullet.HEIGHT/2;
         tf.bullets.add(new Bullet(bx,by,dir,tf));
+    }
+
+    public void die() {
+        living = false;
     }
 }

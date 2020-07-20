@@ -11,9 +11,10 @@ import java.util.List;
 @SuppressWarnings("all")
 public class TankFrame extends Frame {
 
-    Tank myTank = new Tank(300,300,Dir.UP,this);
-    List<Bullet> bullets = new ArrayList<Bullet>();
-    static final int GAME_WIDTH = 800; int GAME_HEIGHT = 600;
+    Tank myTank = new Tank(300,300,Dir.UP,this); //己方坦克
+    List<Bullet> bullets = new ArrayList<>(); //子弹集合
+    List<Tank> tanks = new ArrayList<>(); //敌方坦克集合--主类中初始化
+    static final int GAME_WIDTH = 1200; int GAME_HEIGHT = 900; //窗口的宽高
 
     public TankFrame() {
         setSize(GAME_WIDTH,GAME_HEIGHT);  //设置窗口大小
@@ -58,11 +59,21 @@ public class TankFrame extends Frame {
         Color c = g.getColor();
         g.setColor(Color.white);
         g.drawString("子弹的数量：" + bullets.size(),10,60);
+        g.drawString("敌人的数量：" + tanks.size(),10,80);
         g.setColor(c);
 
         myTank.paint(g); //坦克自己画自己
         for (int i=0; i<bullets.size(); i++) {
             bullets.get(i).paint(g);//子弹画自己
+        }
+        for (int i=0; i<tanks.size(); i++) {
+            tanks.get(i).paint(g);//敌方坦克画自己
+        }
+
+        for (int i=0; i<bullets.size(); i++) {
+            for (int j=0; j<tanks.size(); j++) {
+                bullets.get(i).collideWith(tanks.get(j)); //判断子弹和坦克是否相撞
+            }
         }
     }
 
@@ -78,20 +89,23 @@ public class TankFrame extends Frame {
             switch (key) {
                 case KeyEvent.VK_LEFT:
                     bL = true;
+                    setMainTankDir(); //设置方向
                     break;
                 case KeyEvent.VK_UP:
                     bU = true;
+                    setMainTankDir(); //设置方向
                     break;
                 case KeyEvent.VK_RIGHT:
                     bR = true;
+                    setMainTankDir(); //设置方向
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = true;
+                    setMainTankDir(); //设置方向
                     break;
                 default:
                     break;
             }
-            setMainTankDir(); //设置方向
         }
 
         @Override
@@ -100,15 +114,19 @@ public class TankFrame extends Frame {
             switch (key) {
                 case KeyEvent.VK_LEFT:
                     bL = false;
+                    setMainTankDir(); //设置方向
                     break;
                 case KeyEvent.VK_UP:
                     bU = false;
+                    setMainTankDir(); //设置方向
                     break;
                 case KeyEvent.VK_RIGHT:
                     bR = false;
+                    setMainTankDir(); //设置方向
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = false;
+                    setMainTankDir(); //设置方向
                     break;
                 case KeyEvent.VK_CONTROL:
                     myTank.fire();
@@ -116,7 +134,6 @@ public class TankFrame extends Frame {
                 default:
                     break;
             }
-            setMainTankDir(); //设置方向
         }
 
         //设置坦克的移动方向
@@ -125,11 +142,11 @@ public class TankFrame extends Frame {
             if (!bL && !bU && !bR && !bD) {
                 myTank.setMoving(false);
             }else {
+                myTank.setMoving(true);
                 if (bL) myTank.setDir(Dir.LEFT);
                 if (bU) myTank.setDir(Dir.UP);
                 if (bR) myTank.setDir(Dir.RIGHT);
                 if (bD) myTank.setDir(Dir.DOWN);
-                myTank.setMoving(true);
             }
         }
     }
