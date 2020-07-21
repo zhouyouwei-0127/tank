@@ -15,7 +15,7 @@ public class TankFrame extends Frame {
     Tank myTank = new Tank(300,300,Dir.UP, Group.GOOD,this); //己方坦克
     List<Bullet> bullets = new ArrayList<>(); //子弹集合
     List<Tank> tanks = new ArrayList<>(); //敌方坦克集合--主类中初始化
-    Explode explode = new Explode(200,200,this);
+    List<Explode> explodes = new ArrayList<>(); //爆炸集合
 
     public TankFrame() {
         setSize(GAME_WIDTH,GAME_HEIGHT);  //设置窗口大小
@@ -70,8 +70,11 @@ public class TankFrame extends Frame {
         for (int i=0; i<tanks.size(); i++) {
             tanks.get(i).paint(g);//敌方坦克画自己
         }
-        explode.paint(g);
+        for (int i=0; i<explodes.size(); i++) {
+            explodes.get(i).paint(g);//爆炸画自己
+        }
 
+        //碰撞检测
         for (int i=0; i<bullets.size(); i++) {
             for (int j=0; j<tanks.size(); j++) {
                 bullets.get(i).collideWith(tanks.get(j)); //判断子弹和坦克是否相撞
