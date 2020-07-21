@@ -11,10 +11,11 @@ import java.util.List;
 @SuppressWarnings("all")
 public class TankFrame extends Frame {
 
+    static final int GAME_WIDTH = 1200; int GAME_HEIGHT = 900; //窗口的宽高
     Tank myTank = new Tank(300,300,Dir.UP, Group.GOOD,this); //己方坦克
     List<Bullet> bullets = new ArrayList<>(); //子弹集合
     List<Tank> tanks = new ArrayList<>(); //敌方坦克集合--主类中初始化
-    static final int GAME_WIDTH = 1200; int GAME_HEIGHT = 900; //窗口的宽高
+    Explode explode = new Explode(200,200,this);
 
     public TankFrame() {
         setSize(GAME_WIDTH,GAME_HEIGHT);  //设置窗口大小
@@ -69,6 +70,7 @@ public class TankFrame extends Frame {
         for (int i=0; i<tanks.size(); i++) {
             tanks.get(i).paint(g);//敌方坦克画自己
         }
+        explode.paint(g);
 
         for (int i=0; i<bullets.size(); i++) {
             for (int j=0; j<tanks.size(); j++) {

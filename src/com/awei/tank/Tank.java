@@ -7,8 +7,8 @@ import java.util.Random;
 public class Tank {
 
     private int x = 200,y = 200;  //用变量定义位置，用来控制移动
-    public static int WIDTH = ResourceMgr.tankD.getWidth(); //图片的宽度
-    public static int HEIGHT = ResourceMgr.tankD.getHeight(); //图片的高度
+    public static int WIDTH = ResourceMgr.goodTankD.getWidth(); //图片的宽度
+    public static int HEIGHT = ResourceMgr.goodTankD.getHeight(); //图片的高度
     private final int speed = 5; //移动速度
     private Dir dir = Dir.UP; //移动方向
     private boolean moving = true; //坦克状态--静止或移动
@@ -69,16 +69,16 @@ public class Tank {
         }
         switch (dir) {
             case LEFT:
-                g.drawImage(ResourceMgr.tankL,x,y,null); //画坦克图片
+                g.drawImage(this.group == Group.GOOD? ResourceMgr.goodTankL : ResourceMgr.badTankL,x,y,null); //画坦克图片
                 break;
             case UP:
-                g.drawImage(ResourceMgr.tankU,x,y,null); //画坦克图片
+                g.drawImage(this.group == Group.GOOD? ResourceMgr.goodTankU : ResourceMgr.badTankU,x,y,null); //画坦克图片
                 break;
             case RIGHT:
-                g.drawImage(ResourceMgr.tankR,x,y,null); //画坦克图片
+                g.drawImage(this.group == Group.GOOD? ResourceMgr.goodTankR : ResourceMgr.badTankR,x,y,null); //画坦克图片
                 break;
             case DOWN:
-                g.drawImage(ResourceMgr.tankD,x,y,null); //画坦克图片
+                g.drawImage(this.group == Group.GOOD? ResourceMgr.goodTankD : ResourceMgr.badTankD,x,y,null); //画坦克图片
                 break;
         }
         move(); //移动

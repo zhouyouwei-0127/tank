@@ -8,7 +8,6 @@ import java.awt.*;
 public class Bullet {
 
     private int x = 300, y = 300; //子弹位置
-    private int width = 30, height = 30; //子弹宽高
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     private final int speed = 10; //子弹速度
