@@ -9,17 +9,19 @@ public class Bullet {
 
     private int x = 300, y = 300; //子弹位置
     private int width = 30, height = 30; //子弹宽高
-    private final int speed = 10; //子弹速度
-    private Dir dir = Dir.DOWN; //子弹方向
-    private boolean living = true;
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
+    private final int speed = 10; //子弹速度
+    private Dir dir = Dir.DOWN; //子弹方向
+    private Group group; //敌我标识
+    private boolean living = true;
     TankFrame tf = null;
 
-    public Bullet(int x, int y, Dir dir, TankFrame tf) {
+    public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
         this.tf = tf;
     }
 
@@ -68,6 +70,9 @@ public class Bullet {
     }
 
     public void collideWith(Tank tank) {
+        if (this.group == tank.getGroup()) {
+            return;
+        }
         Rectangle rectL = new Rectangle(x,y,WIDTH,HEIGHT);
         Rectangle rectT = new Rectangle(tank.getX(),tank.getY(),tank.WIDTH,tank.HEIGHT);
         if (rectL.intersects(rectT)) {

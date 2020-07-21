@@ -11,7 +11,7 @@ import java.util.List;
 @SuppressWarnings("all")
 public class TankFrame extends Frame {
 
-    Tank myTank = new Tank(300,300,Dir.UP,this); //己方坦克
+    Tank myTank = new Tank(300,300,Dir.UP, Group.GOOD,this); //己方坦克
     List<Bullet> bullets = new ArrayList<>(); //子弹集合
     List<Tank> tanks = new ArrayList<>(); //敌方坦克集合--主类中初始化
     static final int GAME_WIDTH = 1200; int GAME_HEIGHT = 900; //窗口的宽高

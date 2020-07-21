@@ -1,24 +1,36 @@
 package com.awei.tank;
 
 import java.awt.*;
+import java.util.Random;
 
 @SuppressWarnings("all")
 public class Tank {
 
     private int x = 200,y = 200;  //用变量定义位置，用来控制移动
-    private final int speed = 5; //移动速度
-    private Dir dir = Dir.UP; //移动方向
-    private boolean moving = false; //坦克状态--静止或移动
-    private boolean living = true; //是否存活
     public static int WIDTH = ResourceMgr.tankD.getWidth(); //图片的宽度
     public static int HEIGHT = ResourceMgr.tankD.getHeight(); //图片的高度
+    private final int speed = 5; //移动速度
+    private Dir dir = Dir.UP; //移动方向
+    private boolean moving = true; //坦克状态--静止或移动
+    private boolean living = true; //是否存活
+    private Group group; //敌我标识
     TankFrame tf = null;
+    private Random random = new Random();
 
-    public Tank(int x, int y, Dir dir, TankFrame tf) {
+    public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
         this.tf = tf;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public Dir getDir() {
@@ -93,12 +105,16 @@ public class Tank {
             default:
                 break;
         }
+        if (random.nextInt(10) > 5) {
+            fire();
+        }
+
     }
 
     public void fire() {
         int bx = x + WIDTH/2 - Bullet.WIDTH/2;
         int by = y + HEIGHT/2 - Bullet.HEIGHT/2;
-        tf.bullets.add(new Bullet(bx,by,dir,tf));
+        tf.bullets.add(new Bullet(bx,by,dir,group,tf));
     }
 
     public void die() {

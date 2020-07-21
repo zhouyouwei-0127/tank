@@ -8,7 +8,7 @@ public class Mian {
 
         //画敌方坦克
         for (int i = 0; i < 5; i++) {
-            tf.tanks.add(new Tank(50 + 50*i,300,Dir.LEFT,tf));
+            tf.tanks.add(new Tank(50 + 50*i,300,Dir.DOWN,Group.BAD,tf));
         }
 
         while (true) {
