@@ -6,7 +6,7 @@ import java.util.Random;
 @SuppressWarnings("all")
 public class Tank {
 
-    private int x = 200,y = 200;  //用变量定义位置，用来控制移动
+    private int x,y;  //用变量定义位置，用来控制移动
     public static int WIDTH = ResourceMgr.goodTankD.getWidth(); //图片的宽度
     public static int HEIGHT = ResourceMgr.goodTankD.getHeight(); //图片的高度
     private final int speed = 5; //移动速度
@@ -16,6 +16,7 @@ public class Tank {
     private Group group; //敌我标识
     TankFrame tf = null;
     private Random random = new Random();
+    Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
 
     public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
@@ -23,6 +24,9 @@ public class Tank {
         this.dir = dir;
         this.group = group;
         this.tf = tf;
+
+        rect.x = x;
+        rect.y = y;
     }
 
     public Group getGroup() {
@@ -105,16 +109,37 @@ public class Tank {
             default:
                 break;
         }
-        if (random.nextInt(10) > 5) {
+
+        if (group == Group.BAD && random.nextInt(100) > 95) { //敌方坦克随机发射子弹
             fire();
         }
+        if (group == Group.BAD && random.nextInt(100) > 95) { //敌方坦克随机移动
+            randomDir();
+        }
 
+        //边界检测
+        boundsCheck();
+
+        //更新rect
+        rect.x = x;
+        rect.y = y;
+    }
+
+    private void boundsCheck() {
+        if (x < 2) x = 2;
+        if (y < 30) y = 30;
+        if (x > TankFrame.GAME_WIDTH - Tank.WIDTH + 2) x = TankFrame.GAME_WIDTH - Tank.WIDTH;
+        if (y > TankFrame.GAME_HEIGHT - Tank.HEIGHT + 2) y = TankFrame.GAME_HEIGHT - Tank.HEIGHT + 2;
+    }
+
+    private void randomDir() {
+        dir = Dir.values()[random.nextInt(4)];
     }
 
     public void fire() {
-        int bx = x + WIDTH/2 - Bullet.WIDTH/2;
-        int by = y + HEIGHT/2 - Bullet.HEIGHT/2;
-        tf.bullets.add(new Bullet(bx,by,dir,group,tf));
+        int bX = x + WIDTH/2 - Bullet.WIDTH/2;
+        int bY = y + HEIGHT/2 - Bullet.HEIGHT/2;
+        tf.bullets.add(new Bullet(bX,bY,dir,group,tf));
     }
 
     public void die() {

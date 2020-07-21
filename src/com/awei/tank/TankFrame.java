@@ -11,7 +11,7 @@ import java.util.List;
 @SuppressWarnings("all")
 public class TankFrame extends Frame {
 
-    static final int GAME_WIDTH = 1200; int GAME_HEIGHT = 900; //窗口的宽高
+    static final int GAME_WIDTH = 1200, GAME_HEIGHT = 900; //窗口的宽高
     Tank myTank = new Tank(300,300,Dir.UP, Group.GOOD,this); //己方坦克
     List<Bullet> bullets = new ArrayList<>(); //子弹集合
     List<Tank> tanks = new ArrayList<>(); //敌方坦克集合--主类中初始化
@@ -61,6 +61,7 @@ public class TankFrame extends Frame {
         g.setColor(Color.white);
         g.drawString("子弹的数量：" + bullets.size(),10,60);
         g.drawString("敌人的数量：" + tanks.size(),10,80);
+        g.drawString("爆炸的数量：" + explodes.size(),10,100);
         g.setColor(c);
 
         myTank.paint(g); //坦克自己画自己

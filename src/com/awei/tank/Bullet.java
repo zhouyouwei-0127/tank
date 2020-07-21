@@ -13,8 +13,9 @@ public class Bullet {
     private final int speed = 10; //子弹速度
     private Dir dir = Dir.DOWN; //子弹方向
     private Group group; //敌我标识
-    private boolean living = true;
+    private boolean living = true; //是否存活标识
     TankFrame tf = null;
+    Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
 
     public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
@@ -22,6 +23,9 @@ public class Bullet {
         this.dir = dir;
         this.group = group;
         this.tf = tf;
+
+        rect.x = x;
+        rect.y = y;
     }
 
     public void paint(Graphics g) {
@@ -66,18 +70,23 @@ public class Bullet {
         if (x < 0 || y < 0 || x > tf.getWidth() || y > tf.getHeight()) {
             living = false;
         }
+
+        //更新rect
+        rect.x = x;
+        rect.y = y;
     }
 
+    //碰撞检测
     public void collideWith(Tank tank) {
         if (this.group == tank.getGroup()) {
             return;
         }
-        Rectangle rectL = new Rectangle(x,y,WIDTH,HEIGHT);
-        Rectangle rectT = new Rectangle(tank.getX(),tank.getY(),tank.WIDTH,tank.HEIGHT);
-        if (rectL.intersects(rectT)) {
+        if (rect.intersects(tank.rect)) {
             die();
             tank.die();
-            tf.explodes.add(new Explode(x,y,tf));
+            int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
+            int eY = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
+            tf.explodes.add(new Explode(eX,eY,tf));
         }
     }
 
