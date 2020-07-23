@@ -26,6 +26,8 @@ public class Bullet {
 
         rect.x = x;
         rect.y = y;
+
+        tf.bullets.add(this);
     }
 
     public void paint(Graphics g) {

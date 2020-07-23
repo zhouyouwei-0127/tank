@@ -1,22 +1,27 @@
 package com.awei.tank;
 
+import com.awei.tank.fireStategy.DefaultFireStrategy;
+import com.awei.tank.fireStategy.FireStrategy;
+import com.awei.tank.fireStategy.FourDirFireStrategy;
+
 import java.awt.*;
 import java.util.Random;
 
 @SuppressWarnings("all")
 public class Tank {
 
-    private int x,y;  //用变量定义位置，用来控制移动
+    public int x,y;  //用变量定义位置，用来控制移动
     public static int WIDTH = ResourceMgr.goodTankD.getWidth(); //图片的宽度
     public static int HEIGHT = ResourceMgr.goodTankD.getHeight(); //图片的高度
     private final int speed = 5; //移动速度
-    private Dir dir = Dir.UP; //移动方向
+    public Dir dir = Dir.UP; //移动方向
     private boolean moving = true; //坦克状态--静止或移动
     private boolean living = true; //是否存活
-    private Group group; //敌我标识
-    TankFrame tf = null;
+    public Group group; //敌我标识
+    public TankFrame tf = null;
     private Random random = new Random();
     Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
+    FireStrategy fs; //坦克开火的策略
 
     public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
@@ -27,6 +32,13 @@ public class Tank {
 
         rect.x = x;
         rect.y = y;
+
+        //根据坦克的敌我属性更换不同的开火策略
+        if (group == Group.GOOD) {
+            fs = new FourDirFireStrategy();
+        } else {
+            fs = new DefaultFireStrategy();
+        }
     }
 
     public Group getGroup() {
@@ -137,9 +149,7 @@ public class Tank {
     }
 
     public void fire() {
-        int bX = x + WIDTH/2 - Bullet.WIDTH/2;
-        int bY = y + HEIGHT/2 - Bullet.HEIGHT/2;
-        tf.bullets.add(new Bullet(bX,bY,dir,group,tf));
+        fs.fire(this);
     }
 
     public void die() {
