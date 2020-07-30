@@ -18,17 +18,17 @@ public class Tank {
     private boolean moving = true; //坦克状态--静止或移动
     private boolean living = true; //是否存活
     public Group group; //敌我标识
-    public TankFrame tf = null;
     private Random random = new Random();
     Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
     FireStrategy fs; //坦克开火的策略
+    public GameModel gm;
 
-    public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
+    public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.tf = tf;
+        this.gm = gm;
 
         rect.x = x;
         rect.y = y;
@@ -81,7 +81,7 @@ public class Tank {
 
     public void paint(Graphics g) {
         if (!living) {
-            tf.tanks.remove(this);
+            gm.tanks.remove(this);
         }
         switch (dir) {
             case LEFT:

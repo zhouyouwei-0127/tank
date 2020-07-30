@@ -5,17 +5,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("all")
 public class TankFrame extends Frame {
 
     static final int GAME_WIDTH = 1200, GAME_HEIGHT = 900; //窗口的宽高
-    Tank myTank = new Tank(300,300,Dir.UP, Group.GOOD,this); //己方坦克
-    List<Bullet> bullets = new ArrayList<>(); //子弹集合
-    List<Tank> tanks = new ArrayList<>(); //敌方坦克集合--主类中初始化
-    List<Explode> explodes = new ArrayList<>(); //爆炸集合
+    GameModel gm = new GameModel();
 
     public TankFrame() {
         setSize(GAME_WIDTH,GAME_HEIGHT);  //设置窗口大小
@@ -54,33 +49,8 @@ public class TankFrame extends Frame {
         g.drawImage(offScreenImage,0,0,null);
     }
 
-    //在窗口需要重新绘制的时候会自动调用此方法
-    @Override
     public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(Color.white);
-        g.drawString("子弹的数量：" + bullets.size(),10,60);
-        g.drawString("敌人的数量：" + tanks.size(),10,80);
-        g.drawString("爆炸的数量：" + explodes.size(),10,100);
-        g.setColor(c);
-
-        myTank.paint(g); //坦克自己画自己
-        for (int i=0; i<bullets.size(); i++) {
-            bullets.get(i).paint(g);//子弹画自己
-        }
-        for (int i=0; i<tanks.size(); i++) {
-            tanks.get(i).paint(g);//敌方坦克画自己
-        }
-        for (int i=0; i<explodes.size(); i++) {
-            explodes.get(i).paint(g);//爆炸画自己
-        }
-
-        //碰撞检测
-        for (int i=0; i<bullets.size(); i++) {
-            for (int j=0; j<tanks.size(); j++) {
-                bullets.get(i).collideWith(tanks.get(j)); //判断子弹和坦克是否相撞
-            }
-        }
+        gm.paint(g);
     }
 
     //键盘监听处理类，根据按键控制坦克的移动方向
@@ -135,7 +105,7 @@ public class TankFrame extends Frame {
                     setMainTankDir(); //设置方向
                     break;
                 case KeyEvent.VK_CONTROL:
-                    myTank.fire();
+                    gm.getMyTank().fire();
                     break;
                 default:
                     break;
@@ -144,6 +114,7 @@ public class TankFrame extends Frame {
 
         //设置坦克的移动方向
         private void setMainTankDir() {
+            Tank myTank = gm.getMyTank();
             //如果没有按下方向键，则坦克处于静止状态
             if (!bL && !bU && !bR && !bD) {
                 myTank.setMoving(false);

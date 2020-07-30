@@ -14,25 +14,25 @@ public class Bullet {
     private Dir dir = Dir.DOWN; //子弹方向
     private Group group; //敌我标识
     private boolean living = true; //是否存活标识
-    TankFrame tf = null;
+    GameModel gm;
     Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
 
-    public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
+    public Bullet(int x, int y, Dir dir, Group group, GameModel gm) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.tf = tf;
+        this.gm = gm;
 
         rect.x = x;
         rect.y = y;
 
-        tf.bullets.add(this);
+        gm.bullets.add(this);
     }
 
     public void paint(Graphics g) {
         if (!living) {
-            tf.bullets.remove(this); //移除死亡的坦克
+            gm.bullets.remove(this); //移除死亡的坦克
         }
         switch (dir) {
             case LEFT:
@@ -69,7 +69,7 @@ public class Bullet {
                 break;
         }
         //如果子弹碰到边界则视为死亡，在Paint方法中将其在集合中移除
-        if (x < 0 || y < 0 || x > tf.getWidth() || y > tf.getHeight()) {
+        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
             living = false;
         }
 
@@ -88,7 +88,7 @@ public class Bullet {
             tank.die();
             int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
             int eY = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-            tf.explodes.add(new Explode(eX,eY,tf));
+            gm.explodes.add(new Explode(eX,eY,gm));
         }
     }
 
