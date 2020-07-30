@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * 子弹类
  */
-public class Explode {
+public class Explode extends GameObject {
 
     private int x = 200, y = 200; //位置
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
@@ -22,7 +22,7 @@ public class Explode {
     public void paint(Graphics g) {
         g.drawImage(ResourceMgr.explodes[step++],x,y,null);
         if (step == ResourceMgr.explodes.length) {
-            gm.explodes.remove(this);
+            gm.remove(this);
         }
     }
 }

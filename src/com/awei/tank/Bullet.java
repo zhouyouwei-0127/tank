@@ -5,17 +5,17 @@ import java.awt.*;
 /**
  * 子弹类
  */
-public class Bullet {
+public class Bullet extends GameObject {
 
     private int x = 300, y = 300; //子弹位置
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     private final int speed = 10; //子弹速度
     private Dir dir = Dir.DOWN; //子弹方向
-    private Group group; //敌我标识
+    public Group group; //敌我标识
     private boolean living = true; //是否存活标识
-    GameModel gm;
-    Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
+    public GameModel gm;
+    public Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
 
     public Bullet(int x, int y, Dir dir, Group group, GameModel gm) {
         this.x = x;
@@ -27,12 +27,12 @@ public class Bullet {
         rect.x = x;
         rect.y = y;
 
-        gm.bullets.add(this);
+        gm.add(this);
     }
 
     public void paint(Graphics g) {
         if (!living) {
-            gm.bullets.remove(this); //移除死亡的坦克
+            gm.remove(this); //移除死亡的坦克
         }
         switch (dir) {
             case LEFT:
@@ -78,21 +78,7 @@ public class Bullet {
         rect.y = y;
     }
 
-    //碰撞检测
-    public void collideWith(Tank tank) {
-        if (this.group == tank.getGroup()) {
-            return;
-        }
-        if (rect.intersects(tank.rect)) {
-            die();
-            tank.die();
-            int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
-            int eY = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-            gm.explodes.add(new Explode(eX,eY,gm));
-        }
-    }
-
-    private void die() {
+    public void die() {
         living = false;
     }
 }

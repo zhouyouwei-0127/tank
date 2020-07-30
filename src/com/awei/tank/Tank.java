@@ -8,9 +8,10 @@ import java.awt.*;
 import java.util.Random;
 
 @SuppressWarnings("all")
-public class Tank {
+public class Tank extends GameObject {
 
     public int x,y;  //用变量定义位置，用来控制移动
+    public int oldX,oldY;
     public static int WIDTH = ResourceMgr.goodTankD.getWidth(); //图片的宽度
     public static int HEIGHT = ResourceMgr.goodTankD.getHeight(); //图片的高度
     private final int speed = 5; //移动速度
@@ -19,7 +20,7 @@ public class Tank {
     private boolean living = true; //是否存活
     public Group group; //敌我标识
     private Random random = new Random();
-    Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
+    public Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
     FireStrategy fs; //坦克开火的策略
     public GameModel gm;
 
@@ -81,7 +82,7 @@ public class Tank {
 
     public void paint(Graphics g) {
         if (!living) {
-            gm.tanks.remove(this);
+            gm.remove(this);
         }
         switch (dir) {
             case LEFT:
@@ -101,6 +102,8 @@ public class Tank {
     }
 
     public void move() {
+        oldX = x;
+        oldY = y;
         if (!moving) {
             return;
         }
