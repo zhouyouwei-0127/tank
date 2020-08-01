@@ -1,7 +1,7 @@
 package com.awei.tank;
 
 @SuppressWarnings("all")
-public class Mian {
+public class Main {
 
     public static void main(String[] args) throws Exception {
         TankFrame tf = new TankFrame();

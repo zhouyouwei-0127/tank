@@ -22,14 +22,12 @@ public class Tank extends GameObject {
     private Random random = new Random();
     public Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
     FireStrategy fs; //坦克开火的策略
-    public GameModel gm;
 
-    public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
+    public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.gm = gm;
 
         rect.x = x;
         rect.y = y;
@@ -39,6 +37,10 @@ public class Tank extends GameObject {
             fs = new FourDirFireStrategy();
         } else {
             fs = new DefaultFireStrategy();
+        }
+
+        if (group == Group.BAD) {
+            GameModel.getInstance().add(this);
         }
     }
 
@@ -82,7 +84,7 @@ public class Tank extends GameObject {
 
     public void paint(Graphics g) {
         if (!living) {
-            gm.remove(this);
+            GameModel.getInstance().remove(this);
         }
         switch (dir) {
             case LEFT:
@@ -157,5 +159,10 @@ public class Tank extends GameObject {
 
     public void die() {
         living = false;
+    }
+
+    public void back () {
+        x = oldX;
+        y = oldY;
     }
 }

@@ -29,7 +29,7 @@ public class BulletTankCollider implements Collider {
             tank.die();
             int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
             int eY = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-            b.gm.add(new Explode(eX,eY,b.gm));
+            new Explode(eX,eY);
             return false;
         }
         return true;

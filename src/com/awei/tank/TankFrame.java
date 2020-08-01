@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 public class TankFrame extends Frame {
 
     static final int GAME_WIDTH = 1200, GAME_HEIGHT = 900; //窗口的宽高
-    GameModel gm = new GameModel();
 
     public TankFrame() {
         setSize(GAME_WIDTH,GAME_HEIGHT);  //设置窗口大小
@@ -50,7 +49,7 @@ public class TankFrame extends Frame {
     }
 
     public void paint(Graphics g) {
-        gm.paint(g);
+        GameModel.getInstance().paint(g);
     }
 
     //键盘监听处理类，根据按键控制坦克的移动方向
@@ -105,7 +104,7 @@ public class TankFrame extends Frame {
                     setMainTankDir(); //设置方向
                     break;
                 case KeyEvent.VK_CONTROL:
-                    gm.getMyTank().fire();
+                    GameModel.getInstance().getMyTank().fire();
                     break;
                 default:
                     break;
@@ -114,7 +113,7 @@ public class TankFrame extends Frame {
 
         //设置坦克的移动方向
         private void setMainTankDir() {
-            Tank myTank = gm.getMyTank();
+            Tank myTank = GameModel.getInstance().getMyTank();
             //如果没有按下方向键，则坦克处于静止状态
             if (!bL && !bU && !bR && !bD) {
                 myTank.setMoving(false);

@@ -14,25 +14,23 @@ public class Bullet extends GameObject {
     private Dir dir = Dir.DOWN; //子弹方向
     public Group group; //敌我标识
     private boolean living = true; //是否存活标识
-    public GameModel gm;
     public Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
 
-    public Bullet(int x, int y, Dir dir, Group group, GameModel gm) {
+    public Bullet(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.gm = gm;
 
         rect.x = x;
         rect.y = y;
 
-        gm.add(this);
+        GameModel.getInstance().add(this);
     }
 
     public void paint(Graphics g) {
         if (!living) {
-            gm.remove(this); //移除死亡的坦克
+            GameModel.getInstance().remove(this); //移除死亡的坦克
         }
         switch (dir) {
             case LEFT:
