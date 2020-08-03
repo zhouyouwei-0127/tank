@@ -7,7 +7,6 @@ import java.awt.*;
  */
 public class Explode extends GameObject {
 
-    private int x = 200, y = 200; //位置
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     private int step = 0;
@@ -23,5 +22,15 @@ public class Explode extends GameObject {
         if (step == ResourceMgr.explodes.length) {
             GameModel.getInstance().remove(this);
         }
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 }

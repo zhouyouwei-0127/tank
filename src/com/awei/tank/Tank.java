@@ -10,7 +10,6 @@ import java.util.Random;
 @SuppressWarnings("all")
 public class Tank extends GameObject {
 
-    public int x,y;  //用变量定义位置，用来控制移动
     public int oldX,oldY;
     public static int WIDTH = ResourceMgr.goodTankD.getWidth(); //图片的宽度
     public static int HEIGHT = ResourceMgr.goodTankD.getHeight(); //图片的高度
@@ -164,5 +163,15 @@ public class Tank extends GameObject {
     public void back () {
         x = oldX;
         y = oldY;
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 }

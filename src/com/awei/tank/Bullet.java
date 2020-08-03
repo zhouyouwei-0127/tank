@@ -7,11 +7,10 @@ import java.awt.*;
  */
 public class Bullet extends GameObject {
 
-    private int x = 300, y = 300; //子弹位置
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     private final int speed = 10; //子弹速度
-    private Dir dir = Dir.DOWN; //子弹方向
+    private Dir dir; //子弹方向
     public Group group; //敌我标识
     private boolean living = true; //是否存活标识
     public Rectangle rect = new Rectangle(x,y,WIDTH,HEIGHT);
@@ -78,5 +77,15 @@ public class Bullet extends GameObject {
 
     public void die() {
         living = false;
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 }
