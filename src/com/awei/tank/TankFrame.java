@@ -104,7 +104,7 @@ public class TankFrame extends Frame {
                     setMainTankDir(); //设置方向
                     break;
                 case KeyEvent.VK_CONTROL:
-                    GameModel.getInstance().getMyTank().fire();
+                    GameModel.getInstance().getMyTank().handleFireKey();
                     break;
                 default:
                     break;

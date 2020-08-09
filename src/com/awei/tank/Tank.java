@@ -3,8 +3,14 @@ package com.awei.tank;
 import com.awei.tank.fireStategy.DefaultFireStrategy;
 import com.awei.tank.fireStategy.FireStrategy;
 import com.awei.tank.fireStategy.FourDirFireStrategy;
+import com.awei.tank.observer.TankFireEvent;
+import com.awei.tank.observer.TankFireHandler;
+import com.awei.tank.observer.TankFireObserver;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("all")
@@ -154,6 +160,14 @@ public class Tank extends GameObject {
 
     public void fire() {
         fs.fire(this);
+    }
+
+    private List<TankFireObserver> fireObservers = Arrays.asList(new TankFireHandler());
+    public void handleFireKey() {
+        TankFireEvent event = new TankFireEvent(this);
+        for (TankFireObserver observer : fireObservers) {
+            observer.actionFire(event);
+        }
     }
 
     public void die() {
