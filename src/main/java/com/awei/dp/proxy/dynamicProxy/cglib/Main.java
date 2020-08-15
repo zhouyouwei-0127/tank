@@ -9,7 +9,6 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles","true");
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(Tank.class);
         enhancer.setCallback(new TimeMethodInterceptor());
